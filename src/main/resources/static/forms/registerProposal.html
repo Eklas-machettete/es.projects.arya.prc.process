@@ -1,0 +1,72 @@
+<div class="text-center">
+	<strong>Registrar Propuesta</strong>
+</div>
+
+<form>
+  <div class="form-group">
+    <label class="control-label">Nombre de la propuesta</label>
+    <div class="controls">
+      <input type="text"
+      		 cam-variable-type="String"
+             cam-variable-name="nameProposal"
+             class="form-control"  />
+    </div>
+  </div>
+  
+  <div class="form-group">
+    <label class="control-label">Resumen</label>
+    <div class="controls">
+      <input type="text"
+      		 cam-variable-type="String"
+             cam-variable-name="summaryProposal"
+             class="form-control" />
+    </div>
+  </div>
+  
+  <div class="form-group">
+    <label class="control-label">Descripcion</label>
+    <div class="controls">
+      <textarea cam-variable-name="descriptionProposal"
+      			cam-variable-type="String"
+      			class="form-control"  ></textarea>
+    </div>
+  </div>
+  
+  <div class="form-group">
+    <label class="control-label">Quien lo reporta</label>
+    <div class="controls">
+         <select  cam-variable-name="reportProposal" cam-variable-type="String" class="form-control" id="a">
+              <option value="">Reporter</option>
+           
+        </select>
+      		 
+      		 
+    </div>
+  </div>
+  
+  <div class="form-group">
+    <label class="control-label">Prioridad</label>
+    <div class="controls">
+      <select  cam-variable-name="priorityProposal" cam-variable-type="String" class="form-control" >
+             <option value="Highest">Highest</option>
+             <option value="High">High</option>
+             <option value="Medium">Medium</option>
+             <option value="Low">Low</option>
+              <option value="Lowest">Lowest</option>
+           </select>
+    </div>
+  </div>
+  
+  <div class="form-group">
+    <label class="control-label">Etiquetas</label>
+    <div class="controls">
+      <input type="text" 
+      		 cam-variable-name="tagsProposal"
+      		 cam-variable-type="String"
+      		 class="form-control"  />
+    </div>
+  </div>
+
+  <script cam-script type="text/form-script">
+  </script>
+</form>

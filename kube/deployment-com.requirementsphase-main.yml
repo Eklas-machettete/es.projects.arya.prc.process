@@ -1,0 +1,58 @@
+# ... Deployment YAML definition
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: requirementsphase
+  namespace: prc-nm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: requirementsphase
+  template:
+    metadata:
+      labels:
+        app: requirementsphase
+    spec:
+      containers:
+        - env:
+          - name: POSTGRES_URL
+            valueFrom:
+              secretKeyRef:
+                name: requirementsphase-secrets
+                key: spring.datasource.url
+          - name: POSTGRES_USER
+            valueFrom:
+              secretKeyRef:
+                name: requirementsphase-secrets
+                key: spring.datasource.username
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: requirementsphase-secrets
+                key: spring.datasource.password
+    spec:
+      nodeName: v06-k8smaster-main
+      containers:
+        - name: requirementsphase
+          image: eklas/camunda
+          ports:
+            - containerPort: 8080
+          imagePullPolicy: Always
+
+          
+---
+# ... Service YAML definition
+apiVersion: v1
+kind: Service
+metadata:
+  name: requirementsphase
+  namespace: prc-nm
+spec:
+  selector:
+    app: requirementsphase
+  ports:
+    - port: 8090
+      targetPort: 8080
+  type: LoadBalancer
+  loadBalancerIP: 95.179.189.132

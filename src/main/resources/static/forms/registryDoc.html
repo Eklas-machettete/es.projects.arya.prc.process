@@ -1,0 +1,217 @@
+<script>
+var num = 0;
+function addFields(){
+  //document.getElementById("myForm").reset();
+   // fun();
+    var container = document.getElementById("container");
+        
+        container.appendChild(document.createElement("br"));
+        var label = document.createElement("label"); 
+        var text = document.createTextNode("Add Story: "+(num+1)); 
+        label.appendChild(text);
+        container.appendChild(label);
+        container.appendChild(document.createElement("br"));
+
+        container.appendChild(document.createElement("br"));
+        var label = document.createElement("label"); 
+        var text = document.createTextNode("Nombre de historia"); 
+        label.appendChild(text);
+        container.appendChild(label); 
+        container.appendChild(document.createElement("br"));
+        var input = document.createElement("input");
+        input.type = "text";
+        input.name = "field1_" + num;
+        input.id = "field1_" + num;
+        container.appendChild(input);
+        container.appendChild(document.createElement("br"));
+
+        container.appendChild(document.createElement("br"));
+        var label = document.createElement("label"); 
+        var text = document.createTextNode("Resumen"); 
+        label.appendChild(text);
+        container.appendChild(label); 
+        container.appendChild(document.createElement("br"));
+        var input = document.createElement("input");
+        input.type = "text";
+        input.name = "field2_" + num;
+        input.id = "field2_" + num;
+        container.appendChild(input);
+        container.appendChild(document.createElement("br"));
+
+        container.appendChild(document.createElement("br"));
+        var label = document.createElement("label"); 
+        var text = document.createTextNode("Descripcion"); 
+        label.appendChild(text);
+        container.appendChild(label); 
+        container.appendChild(document.createElement("br"));
+        var input = document.createElement("input");
+        input.type = "text";
+        input.name = "field3_" + num;
+        input.id = "field3_" + num;
+        container.appendChild(input);
+        container.appendChild(document.createElement("br"));
+
+        container.appendChild(document.createElement("br"));
+        var label = document.createElement("label"); 
+        var text = document.createTextNode("Quien lo reporta"); 
+        label.appendChild(text);
+        container.appendChild(label); 
+        container.appendChild(document.createElement("br"));
+        var input = document.createElement("select");
+       // input.type = "text";
+        input.name = "field4_" + num;
+        input.id = "field4_" + num;
+        container.appendChild(input);
+        var option1 = document.createElement("option");
+        option1.value="Reporter";
+        option1.text="Reporter";
+        input.appendChild(option1);
+        container.appendChild(document.createElement("br"));
+
+
+        container.appendChild(document.createElement("br"));
+        var label = document.createElement("label"); 
+        var text = document.createTextNode("Prioridad"); 
+        label.appendChild(text);
+        container.appendChild(label); 
+        container.appendChild(document.createElement("br"));
+        var input = document.createElement("select");
+       // input.type = "text";
+        input.name = "field5_" + num;
+        input.id = "field5_" + num;
+        container.appendChild(input);
+        var option1 = document.createElement("option");
+        option1.value="Highest";
+        option1.text="Highest";
+        input.appendChild(option1);
+        var option2 = document.createElement("option");
+        option2.value="High";
+        option2.text="High";
+        input.appendChild(option2);
+        var option3 = document.createElement("option");
+        option3.value="Medium";
+        option3.text="Medium";
+        input.appendChild(option3);
+        var option4 = document.createElement("option");
+        option4.value="Low";
+        option4.text="Low";
+        input.appendChild(option4);
+        var option5 = document.createElement("option");
+        option5.value="Lowest";
+        option5.text="Lowest";
+        input.appendChild(option5);
+        container.appendChild(document.createElement("br"));
+
+
+        container.appendChild(document.createElement("br"));
+        var label = document.createElement("label"); 
+        var text = document.createTextNode("Etiquetas"); 
+        label.appendChild(text);
+        container.appendChild(label); 
+        container.appendChild(document.createElement("br"));
+        var input = document.createElement("input");
+        input.type = "text";
+        input.name = "field6_" + num;
+        input.id = "field6_" + num;
+        container.appendChild(input);
+        container.appendChild(document.createElement("br"));
+
+        // Append a line break 
+
+      num++;
+
+}
+</script>
+<style>
+  input {
+  width: 100%;
+      }
+  input {
+  width: 100%;
+      }
+  hr {
+       display: block;
+       position: relative;
+       padding: 0;
+       margin: 8px auto;
+       height: 0;
+       width: 100%;
+       max-height: 0;
+       font-size: 1px;
+       line-height: 0;
+       clear: both;
+       border: none;
+       border-top: 1px solid #aaaaaa;
+     }
+ 
+
+
+
+</style>
+<form name="test" id="myForm" xmlns="http://www.w3.org/1999/html">
+  <div class="form-group">
+    <div id="conta">
+    </div>
+    <div id="container"/>
+    
+  <button onclick="addFields()" id="fixedbutton">click to add story</button>
+  </div>
+    
+  <script cam-script type="text/form-script">
+ inject([ '$scope', function($scope) {
+   
+      camForm.on('form-loaded', function() {
+      });
+
+      camForm.on('variables-fetched', function() {
+      });
+
+      camForm.on('variables-restored', function() {
+      });
+
+      camForm.on('submit', function() {
+    for (var i=0;i<num;i++){
+          camForm.variableManager.createVariable({
+            name: 'nameDocRegistry' + i,
+            type: 'String',
+            value: document.getElementById("field1_"+i).value
+          });
+          camForm.variableManager.createVariable({
+            name: 'summaryDocRegistry' + i,
+            type: 'String',
+            value: document.getElementById("field2_"+i).value
+          });
+          camForm.variableManager.createVariable({
+            name: 'descriptionDocRegistry' + i,
+            type: 'String',
+            value: document.getElementById("field3_"+i).value
+          });
+            camForm.variableManager.createVariable({
+            name: 'reportDocRegistry' + i,
+            type: 'String',
+            value: document.getElementById("field4_"+i).value
+          });
+                    camForm.variableManager.createVariable({
+            name: 'priorityDocRegistry' + i,
+            type: 'String',
+            value: document.getElementById("field5_"+i).value
+          });
+            camForm.variableManager.createVariable({
+            name: 'tagsDocRegistry' + i,
+            type: 'String',
+            value: document.getElementById("field6_"+i).value
+          });
+        }
+    camForm.variableManager.createVariable({
+            name: 'INDEX',
+            type: 'Integer',
+            value: num
+        });
+    
+
+      });
+
+    }]);
+  
+   </script>
+</form>

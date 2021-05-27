@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_086seoo" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.6.0">
+  <bpmn:collaboration id="requiriments_phase">
+    <bpmn:participant id="Participant_1n3evcf" name="FASE DE REQUISITOS" processRef="start_requirements_phase" />
+    <bpmn:group id="Group_0vwdrmh" categoryValueRef="CategoryValue_0qouplh" />
+    <bpmn:textAnnotation id="TextAnnotation_0g1w6w5">
+      <bpmn:text>Se debe de especificar los campos para crear el epic de Jira, en caso de segundo ciclo se deberá colocar la información previa</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_0jbg9lk" sourceRef="Activity_1m799wd" targetRef="TextAnnotation_0g1w6w5" />
+    <bpmn:textAnnotation id="TextAnnotation_06m6k7w">
+      <bpmn:text>Porgramar la sesión en calendario y vamos a añadir una descripción general de la iniciativa. Incluir el estatus de ciclos posteriores y la justificación de rechazo.</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_01s6f8h" sourceRef="Activity_0j4nfi1" targetRef="TextAnnotation_06m6k7w" />
+  </bpmn:collaboration>
+  <bpmn:process id="start_requirements_phase" name="" isExecutable="true">
+    <bpmn:laneSet id="LaneSet_1tuvuk7">
+      <bpmn:lane id="Lane_17uq1q2" name="Comite de Arquitectura">
+        <bpmn:flowNodeRef>Activity_1p6ntdo</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_1283gtb</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_07ly317</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_1h2ljyr</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Event_0dqnrib</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>send_email_for_meeting</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Event_05fbbj2</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_0egaqrv</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_143iqpy" name="Product Manager">
+        <bpmn:flowNodeRef>Activity_0j4nfi1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_1t75bia</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_1m799wd</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_1y5shmf</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>StartEvent_1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_00ao3xu</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:userTask id="Activity_1m799wd" name="Registro de Propuesta" camunda:formKey="embedded:app:forms/registerProposal.html" camunda:assignee="demo">
+      <bpmn:documentation>Se registra la Propuesta de Proyecto. Asignadole un nombre.
+
+
+Datos:
+Epic Name
+Resumen
+Descripción (alcance)
+Quien lo reporta
+Prioridad
+Etiquetas
+
+
+Quedaría pendiente:
+Sprint
+Asignado
+Incidencias asociadas que serían las historias y las tareas</bpmn:documentation>
+      <bpmn:incoming>Flow_047sk7r</bpmn:incoming>
+      <bpmn:outgoing>Flow_1tv2v66</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_17oysi3" sourceRef="Activity_0egaqrv" targetRef="Event_0dqnrib" />
+    <bpmn:sequenceFlow id="Flow_02u0os2" sourceRef="Activity_1p6ntdo" targetRef="Activity_1283gtb" />
+    <bpmn:sequenceFlow id="Flow_1skugbv" sourceRef="Activity_00ao3xu" targetRef="Activity_0j4nfi1" />
+    <bpmn:sequenceFlow id="Flow_0v1ekgn" name="No Aprobado" sourceRef="Gateway_07ly317" targetRef="Activity_00ao3xu">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${rejectedCount &gt;= 1}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0zzytgz" name="Aprobado" sourceRef="Gateway_07ly317" targetRef="Activity_1p6ntdo" />
+    <bpmn:sequenceFlow id="Flow_17nzve1" sourceRef="Activity_1h2ljyr" targetRef="Gateway_07ly317" />
+    <bpmn:sequenceFlow id="Flow_18re4xq" sourceRef="Activity_1y5shmf" targetRef="Event_05fbbj2" />
+    <bpmn:sequenceFlow id="Flow_04n9xbh" sourceRef="Activity_0j4nfi1" targetRef="send_email_for_meeting" />
+    <bpmn:sequenceFlow id="Flow_11fpkef" sourceRef="StartEvent_1" targetRef="Activity_0j4nfi1" />
+    <bpmn:sequenceFlow id="Flow_1tv2v66" sourceRef="Activity_1m799wd" targetRef="Activity_1y5shmf" />
+    <bpmn:serviceTask id="Activity_1y5shmf" name="Actualizar en Epic" camunda:delegateExpression="#{updateEpic}">
+      <bpmn:incoming>Flow_1tv2v66</bpmn:incoming>
+      <bpmn:outgoing>Flow_18re4xq</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_11fpkef</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_00gsvum" sourceRef="Event_05fbbj2" targetRef="Activity_1h2ljyr" />
+    <bpmn:manualTask id="Activity_1t75bia" name="Presentacion de Idea">
+      <bpmn:documentation>La presentacion se efectua en la reunion pautada. Puede ser presencial o virtual.</bpmn:documentation>
+      <bpmn:incoming>Flow_0t506co</bpmn:incoming>
+      <bpmn:outgoing>Flow_047sk7r</bpmn:outgoing>
+    </bpmn:manualTask>
+    <bpmn:sequenceFlow id="Flow_047sk7r" sourceRef="Activity_1t75bia" targetRef="Activity_1m799wd" />
+    <bpmn:sequenceFlow id="Flow_0t506co" sourceRef="send_email_for_meeting" targetRef="Activity_1t75bia" />
+    <bpmn:userTask id="Activity_0j4nfi1" name="1. Fijar Reunion" camunda:formKey="embedded:app:forms/setMeeting.html" camunda:assignee="demo">
+      <bpmn:documentation>Para fijar la reunion se debe rellenar un formulario que indique: 
+- Fecha
+- Hora
+- Nombre de la iniciativa
+- Descripción de la iniciativa
+
+
+Fase 2. Se asocia microservicio para conectar con Google Calendar</bpmn:documentation>
+      <bpmn:incoming>Flow_11fpkef</bpmn:incoming>
+      <bpmn:incoming>Flow_1skugbv</bpmn:incoming>
+      <bpmn:outgoing>Flow_04n9xbh</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:manualTask id="Activity_1p6ntdo" name="Documentacion del proyecto">
+      <bpmn:documentation>Para esta actividad se designa a uno de los miembros del comite. Debe recopilar la informacion y formalizar una documentacion</bpmn:documentation>
+      <bpmn:incoming>Flow_0zzytgz</bpmn:incoming>
+      <bpmn:outgoing>Flow_02u0os2</bpmn:outgoing>
+    </bpmn:manualTask>
+    <bpmn:exclusiveGateway id="Gateway_07ly317" default="Flow_0zzytgz">
+      <bpmn:incoming>Flow_17nzve1</bpmn:incoming>
+      <bpmn:outgoing>Flow_0zzytgz</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0v1ekgn</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Activity_1h2ljyr" name="Revisión de Propuesta" camunda:formKey="embedded:app:forms/reviewProposal.html" camunda:assignee="${assignee}">
+      <bpmn:documentation>Los miembros del comite señalan si consideran aprobada o no la propuesta. El servidor registra su respuesta</bpmn:documentation>
+      <bpmn:incoming>Flow_00gsvum</bpmn:incoming>
+      <bpmn:outgoing>Flow_17nzve1</bpmn:outgoing>
+      <bpmn:multiInstanceLoopCharacteristics camunda:collection="collection" camunda:elementVariable="assignee" />
+    </bpmn:userTask>
+    <bpmn:manualTask id="Activity_00ao3xu" name="Reestructurar  Idea">
+      <bpmn:incoming>Flow_0v1ekgn</bpmn:incoming>
+      <bpmn:outgoing>Flow_1skugbv</bpmn:outgoing>
+    </bpmn:manualTask>
+    <bpmn:userTask id="Activity_1283gtb" name="Registro de Documentacion" camunda:formKey="embedded:app:forms/registryDoc.html" camunda:assignee="demo">
+      <bpmn:documentation>El miembro de comite designado registra el archivo de documentacion.
+
+
+Datos:
+Story Name
+Resumen
+ (Como, Quiero, Para)
+Descripción (alcance)
+Quien lo reporta
+Prioridad
+Etiquetas</bpmn:documentation>
+      <bpmn:incoming>Flow_02u0os2</bpmn:incoming>
+      <bpmn:outgoing>Flow_1dz3y6v</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="Event_0dqnrib">
+      <bpmn:documentation>Se envia un mensaje al Coordinador de Proyectos, Project Manager y Diseñador Web para iniciar las siguientes fases</bpmn:documentation>
+      <bpmn:incoming>Flow_17oysi3</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:intermediateThrowEvent id="send_email_for_meeting">
+      <bpmn:documentation>Cada miembro del comite recibe un mensaje en su bandeja de notificaciones avisandole sobre la reunion de Presentacion de idea</bpmn:documentation>
+      <bpmn:extensionElements>
+        <camunda:executionListener delegateExpression="#{sendEmails}" event="start" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_04n9xbh</bpmn:incoming>
+      <bpmn:outgoing>Flow_0t506co</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_03q9esk" />
+    </bpmn:intermediateThrowEvent>
+    <bpmn:intermediateThrowEvent id="Event_05fbbj2">
+      <bpmn:documentation>Cada miembro del comite recibe una notificacion avisandole del registro de idea y que le indica que ejecute su evaluacion</bpmn:documentation>
+      <bpmn:extensionElements>
+        <camunda:executionListener delegateExpression="#{sendEmailEvaluation}" event="start" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_18re4xq</bpmn:incoming>
+      <bpmn:outgoing>Flow_00gsvum</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_02xunpx" />
+    </bpmn:intermediateThrowEvent>
+    <bpmn:sequenceFlow id="Flow_1dz3y6v" sourceRef="Activity_1283gtb" targetRef="Activity_0egaqrv" />
+    <bpmn:serviceTask id="Activity_0egaqrv" name="Almacenar  Documentacion" camunda:delegateExpression="#{storeDocs}">
+      <bpmn:documentation>Se almacena el archivo de documentacion para referencias</bpmn:documentation>
+      <bpmn:incoming>Flow_1dz3y6v</bpmn:incoming>
+      <bpmn:outgoing>Flow_17oysi3</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:textAnnotation id="TextAnnotation_1w6q9qm">
+      <bpmn:text>Un proyecto se inicia luego de recibir un llamado de accion con una idea para desarrollar</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_1w91f7h" sourceRef="StartEvent_1" targetRef="TextAnnotation_1w6q9qm" />
+    <bpmn:textAnnotation id="TextAnnotation_0wvguwi">
+      <bpmn:text>Si no se aprueba por lo documentado en el registro se deberá de añadir una justificación</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_09nqba2" sourceRef="Activity_1h2ljyr" targetRef="TextAnnotation_0wvguwi" />
+    <bpmn:textAnnotation id="TextAnnotation_0juza4a">
+      <bpmn:text>Se registra en Jira y base de datos la información de la incidencia épica y de las historias de usuario.</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_0qj9y2f" sourceRef="Activity_1283gtb" targetRef="TextAnnotation_0fbe8ks" />
+    <bpmn:textAnnotation id="TextAnnotation_0fbe8ks">
+      <bpmn:text>Se asocian las historias de usuario donde se especifica modularmente que es lo que desde la perspectiva de negocio debería de soportar cada componente.</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_1s4le1x" sourceRef="Activity_0egaqrv" targetRef="TextAnnotation_0juza4a" />
+  </bpmn:process>
+  <bpmn:category id="Category_0ilhs8j">
+    <bpmn:categoryValue id="CategoryValue_0qouplh" />
+  </bpmn:category>
+  <bpmn:message id="Message_179hhfq" name="sendEmailsForMeeting" />
+  <bpmn:message id="Message_1lswdr4" name="sendEmailsForEvaluation" />
+  <bpmn:signal id="Signal_0l068zz" name="nextProcess" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="requiriments_phase">
+      <bpmndi:BPMNShape id="Participant_1n3evcf_di" bpmnElement="Participant_1n3evcf" isHorizontal="true">
+        <dc:Bounds x="161" y="185" width="1929" height="525" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_143iqpy_di" bpmnElement="Lane_143iqpy" isHorizontal="true">
+        <dc:Bounds x="191" y="185" width="1899" height="230" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_17uq1q2_di" bpmnElement="Lane_17uq1q2" isHorizontal="true">
+        <dc:Bounds x="191" y="415" width="1899" height="295" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0t506co_di" bpmnElement="Flow_0t506co">
+        <di:waypoint x="454" y="505" />
+        <di:waypoint x="536" y="505" />
+        <di:waypoint x="536" y="355" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_047sk7r_di" bpmnElement="Flow_047sk7r">
+        <di:waypoint x="586" y="315" />
+        <di:waypoint x="636" y="315" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_00gsvum_di" bpmnElement="Flow_00gsvum">
+        <di:waypoint x="858" y="495" />
+        <di:waypoint x="930" y="495" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1tv2v66_di" bpmnElement="Flow_1tv2v66">
+        <di:waypoint x="736" y="315" />
+        <di:waypoint x="790" y="315" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_11fpkef_di" bpmnElement="Flow_11fpkef">
+        <di:waypoint x="264" y="315" />
+        <di:waypoint x="296" y="315" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_04n9xbh_di" bpmnElement="Flow_04n9xbh">
+        <di:waypoint x="346" y="355" />
+        <di:waypoint x="346" y="505" />
+        <di:waypoint x="418" y="505" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_18re4xq_di" bpmnElement="Flow_18re4xq">
+        <di:waypoint x="840" y="355" />
+        <di:waypoint x="840" y="477" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_17nzve1_di" bpmnElement="Flow_17nzve1">
+        <di:waypoint x="1030" y="495" />
+        <di:waypoint x="1105" y="495" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0zzytgz_di" bpmnElement="Flow_0zzytgz">
+        <di:waypoint x="1155" y="495" />
+        <di:waypoint x="1276" y="495" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1176" y="477" width="48" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0v1ekgn_di" bpmnElement="Flow_0v1ekgn">
+        <di:waypoint x="1130" y="470" />
+        <di:waypoint x="1130" y="355" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1088" y="374" width="65" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1skugbv_di" bpmnElement="Flow_1skugbv">
+        <di:waypoint x="1130" y="275" />
+        <di:waypoint x="1130" y="245" />
+        <di:waypoint x="346" y="245" />
+        <di:waypoint x="346" y="275" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_02u0os2_di" bpmnElement="Flow_02u0os2">
+        <di:waypoint x="1376" y="495" />
+        <di:waypoint x="1450" y="495" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1dz3y6v_di" bpmnElement="Flow_1dz3y6v">
+        <di:waypoint x="1550" y="495" />
+        <di:waypoint x="1630" y="495" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_17oysi3_di" bpmnElement="Flow_17oysi3">
+        <di:waypoint x="1730" y="495" />
+        <di:waypoint x="1852" y="495" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_03sxw4c_di" bpmnElement="Activity_1m799wd">
+        <dc:Bounds x="636" y="275" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_02r9c45_di" bpmnElement="Activity_1y5shmf" bioc:stroke="rgb(30, 136, 229)" bioc:fill="rgb(187, 222, 251)">
+        <dc:Bounds x="790" y="275" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1s7t6lg_di" bpmnElement="StartEvent_1">
+        <dc:Bounds x="228" y="297" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1av9khb_di" bpmnElement="Activity_1t75bia">
+        <dc:Bounds x="486" y="275" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1gzl7yq_di" bpmnElement="Activity_0j4nfi1">
+        <dc:Bounds x="296" y="275" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0e2u646_di" bpmnElement="Activity_1p6ntdo">
+        <dc:Bounds x="1276" y="455" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_07ly317_di" bpmnElement="Gateway_07ly317" isMarkerVisible="true">
+        <dc:Bounds x="1105" y="470" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0p1qonz_di" bpmnElement="Activity_1h2ljyr" bioc:stroke="rgb(251, 140, 0)" bioc:fill="rgb(255, 224, 178)">
+        <dc:Bounds x="930" y="455" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_19ivgtd_di" bpmnElement="Activity_00ao3xu">
+        <dc:Bounds x="1080" y="275" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0u7rnqo_di" bpmnElement="Activity_0egaqrv" bioc:stroke="rgb(30, 136, 229)" bioc:fill="rgb(187, 222, 251)">
+        <dc:Bounds x="1630" y="455" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_10o5bhi_di" bpmnElement="Activity_1283gtb">
+        <dc:Bounds x="1450" y="455" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0rtbk4o_di" bpmnElement="Event_0dqnrib">
+        <dc:Bounds x="1852" y="477" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0lybg9z_di" bpmnElement="send_email_for_meeting">
+        <dc:Bounds x="418" y="487" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_14t2sw1_di" bpmnElement="Event_05fbbj2">
+        <dc:Bounds x="822" y="477" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_1w6q9qm_di" bpmnElement="TextAnnotation_1w6q9qm">
+        <dc:Bounds x="226" y="195" width="200" height="54" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_0wvguwi_di" bpmnElement="TextAnnotation_0wvguwi">
+        <dc:Bounds x="930" y="590" width="240" height="70" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_0juza4a_di" bpmnElement="TextAnnotation_0juza4a">
+        <dc:Bounds x="1710" y="310" width="160" height="77" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_0fbe8ks_di" bpmnElement="TextAnnotation_0fbe8ks">
+        <dc:Bounds x="1520" y="300" width="170" height="97" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Association_1w91f7h_di" bpmnElement="Association_1w91f7h">
+        <di:waypoint x="252" y="298" />
+        <di:waypoint x="269" y="249" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_09nqba2_di" bpmnElement="Association_09nqba2">
+        <di:waypoint x="965" y="535" />
+        <di:waypoint x="944" y="590" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_1s4le1x_di" bpmnElement="Association_1s4le1x">
+        <di:waypoint x="1703" y="455" />
+        <di:waypoint x="1742" y="387" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_0qj9y2f_di" bpmnElement="Association_0qj9y2f">
+        <di:waypoint x="1518" y="455" />
+        <di:waypoint x="1543" y="397" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Group_0vwdrmh_di" bpmnElement="Group_0vwdrmh">
+        <dc:Bounds x="1255" y="430" width="510" height="140" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_0g1w6w5_di" bpmnElement="TextAnnotation_0g1w6w5">
+        <dc:Bounds x="730" y="80" width="180" height="76" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_06m6k7w_di" bpmnElement="TextAnnotation_06m6k7w">
+        <dc:Bounds x="430" y="67" width="180" height="102" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Association_0jbg9lk_di" bpmnElement="Association_0jbg9lk">
+        <di:waypoint x="702" y="275" />
+        <di:waypoint x="752" y="156" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_01s6f8h_di" bpmnElement="Association_01s6f8h">
+        <di:waypoint x="368" y="275" />
+        <di:waypoint x="430" y="165" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

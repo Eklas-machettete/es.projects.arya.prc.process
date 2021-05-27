@@ -1,0 +1,60 @@
+<div class="text-center">
+	<strong>Fijar Reunion</strong>
+</div>
+
+<form name="meetingForm">
+  <div class="form-group">
+    <label class="control-label">Nombre de la iniciativa</label>
+    <div class="controls">
+      <input type="text"
+      		 name="nameMeeting"
+      		 required 
+      		 novalidate
+      		 cam-variable-type="String"
+             cam-variable-name="nameMeeting"
+             class="form-control" />
+      <span style="color: red" ng-show="meetingForm.nameMeeting.$error.required">Este campo es requerido.</span>
+    </div>
+  </div>
+  
+  <div class="form-group">
+    <label class="control-label">Fecha</label>
+    <div class="controls">
+      <input type="date"
+      		 name="dateMeeting"
+      		 required 
+      		 novalidate
+      		 cam-variable-type="String"
+             cam-variable-name="dateMeeting"
+             class="form-control" />      
+      <span style="color: red" ng-show="meetingForm.dateMeeting.$error.required">Este campo es requerido.</span>
+    </div>
+  </div>
+  
+  <div class="form-group">
+    <label class="control-label">Hora</label>
+    <div class="controls">
+      <input type="time"
+      	 	 name="hourMeeting"
+      		 required 
+      		 novalidate
+      		 cam-variable-type="String"
+             cam-variable-name="hourMeeting"
+             class="form-control" />  
+      <span style="color: red" ng-show="meetingForm.hourMeeting.$error.required">Este campo es requerido.</span>    
+    </div>
+  </div>
+  
+  <div class="form-group">
+    <label class="control-label">Descripcion</label>
+    <div class="controls">
+      <textarea cam-variable-name="descriptionMeeting"
+      			cam-variable-type="String"
+      			name="descriptionMeeting"
+      			class="form-control" ></textarea>
+    </div>
+  </div>
+
+  <script cam-script type="text/form-script">
+  </script>
+</form>
